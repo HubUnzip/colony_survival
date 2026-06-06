@@ -1,0 +1,493 @@
+--open source
+--join my discord too https://discord.gg/hU2xvXV2ey
+
+local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
+
+if game.PlaceId == 14888386963 then
+	game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Read me";
+    Text = "This script is not available in the lobby Please join a game!";
+    Duration = 5;
+})
+return
+elseif game.PlaceId == 119570914951001 then
+print("loading -unziphub")
+
+else
+game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Read me";
+    Text = "Not a support game";
+    Duration = 5;
+})
+end
+
+
+local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
+
+local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
+local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
+local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+
+local Window = Library:CreateWindow({
+    Title = 'Colony Survival',
+    Center = true,
+    AutoShow = true,
+    TabPadding = 8,
+    MenuFadeTime = 0.2
+})
+
+
+local Tabs = {
+    Main = Window:AddTab('Main'),
+    ['UI Settings'] = Window:AddTab('UI Settings'),
+}
+
+local credit = Tabs.Main:AddLeftGroupbox('Credit')
+credit:AddLabel('Made by @5km4(unziphub)')
+credit:AddLabel('Sorry if script was bad')
+credit:AddLabel('Join my discord Here')
+
+local MyButton = credit:AddButton({
+    Text = 'Copy link discord',
+    Func = function()
+	setclipboard("https://discord.gg/hU2xvXV2ey")
+    end,
+    DoubleClick = false,
+    Tooltip = 'im very thankyou if you join'
+})
+
+
+
+
+local LeftGroupBox = Tabs.Main:AddLeftGroupbox('Spawn Money')
+LeftGroupBox:AddLabel('It can make your game crash')
+LeftGroupBox:AddSlider('MySlider', {
+    Text = 'Money',
+    Default = 0,
+    Min = 20,
+    Max = 200000,
+    Rounding = 1,
+    Compact = false,
+
+    Callback = function(Value)
+        _G.money = Value
+    end
+})
+
+
+
+local Number = Options.MySlider.Value
+Options.MySlider:OnChanged(function()
+end)
+
+Options.MySlider:SetValue(3)
+
+
+local MyButton = LeftGroupBox:AddButton({
+    Text = 'spawn money (everyone)',
+    Func = function()
+	_G.money2 = _G.money / 20
+
+        for i = 1,_G.money2 do
+game:GetService("ReplicatedStorage").Events.SkipDay:FireServer()
+end
+    end,
+    DoubleClick = false,
+    Tooltip = 'using fireserver SkipDay to spawn a money'
+})
+
+
+
+
+
+--bring
+
+local bring = Tabs.Main:AddLeftGroupbox('Bring')
+bring:AddToggle('MyToggle', {
+    Text = 'Bring all item',
+    Default = true, 
+    Tooltip = 'Bring all item to you',
+
+    Callback = function(Value)
+_G.bring = Value
+        while _G.bring do
+			    for _, item in ipairs(workspace.Items:GetChildren()) do
+	for _, initem in ipairs(item:GetDescendants()) do
+		if initem:IsA("BasePart") then
+			initem.CFrame = hrp.CFrame
+		end
+	end
+end
+			wait(0.1)
+		end
+    end
+})
+
+
+
+Toggles.MyToggle:OnChanged(function()
+_G.bring = Value
+end)
+
+Toggles.MyToggle:SetValue(false)
+
+
+
+
+local MyButton = bring:AddButton({
+    Text = 'Bring all item',
+    Func = function()
+		    for _, item in ipairs(workspace.Items:GetChildren()) do
+	for _, initem in ipairs(item:GetDescendants()) do
+		if initem:IsA("BasePart") then
+			initem.CFrame = hrp.CFrame
+		end
+	end
+end
+    end,
+    DoubleClick = false,
+    Tooltip = 'Bring all item but a button'
+})
+
+bring:AddToggle('MyToggle', {
+    Text = 'Bring all zombie',
+    Default = true, 
+    Tooltip = 'Bring all zombie and you can kill them(doesnt recommand)',
+
+    Callback = function(Value)
+
+        _G.bringzombie = Value
+
+task.spawn(function()
+	while _G.bringzombie do
+		local character = game.Players.LocalPlayer.Character
+		local hrp = character and character:FindFirstChild("HumanoidRootPart")
+
+		if hrp then
+			for _, folder in ipairs({
+				workspace:FindFirstChild("MapZombies"),
+				workspace:FindFirstChild("WaveZombies")
+			}) do
+				if folder then
+					for _, zombie in ipairs(folder:GetDescendants()) do
+						if zombie:IsA("Model") then
+							local zhrp = zombie:FindFirstChild("HumanoidRootPart")
+							local hum = zombie:FindFirstChildOfClass("Humanoid")
+
+							if zhrp and hum and hum.Health > 0 then
+								zhrp.CFrame = hrp.CFrame * CFrame.new(0, 0, -5)
+							end
+						end
+					end
+				end
+			end
+		end
+
+		task.wait(0.1)
+	end
+end)
+		
+    end
+})
+
+
+
+Toggles.MyToggle:OnChanged(function(Value)
+_G.bringzombie = Value
+end)
+
+Toggles.MyToggle:SetValue(false)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--server
+local server = Tabs.Main:AddLeftGroupbox('Server')
+
+
+local MyButton = server:AddButton({
+    Text = 'instant ProximityPrompt',
+    Func = function()
+	print("!")
+		   for _, v in ipairs(game:GetDescendants()) do
+	if v:IsA("ProximityPrompt") then
+		v.HoldDuration = 0
+	end
+end
+
+game.DescendantAdded:Connect(function(v)
+	if v:IsA("ProximityPrompt") then
+		v.HoldDuration = 0
+	end
+end)
+    end,
+    DoubleClick = false,
+    Tooltip = 'Tired of holding Interact? use this'
+})
+
+
+local MyButton = server:AddButton({
+    Text = 'Fire Skipday',
+    Func = function()
+		   game:GetService("ReplicatedStorage").Events.SkipDay:FireServer()
+    end,
+    DoubleClick = false,
+    Tooltip = 'FireServer in ReplicatedStorage'
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--zombie
+local zombie = Tabs.Main:AddLeftGroupbox('Zombie')
+
+
+
+
+zombie:AddToggle('MyToggle', {
+    Text = 'Kill All zombie',
+    Default = true, 
+    Tooltip = 'Bring all zombie to void',
+
+    Callback = function(Value)
+
+_G.Killzombie = Value
+task.spawn(function()
+    while _G.Killzombie do
+        local character = game.Players.LocalPlayer.Character
+        local hrp = character and character:FindFirstChild("HumanoidRootPart")
+
+        if hrp then
+            for _, folder in ipairs({
+                workspace:FindFirstChild("MapZombies"),
+                workspace:FindFirstChild("WaveZombies")
+            }) do
+                if folder then
+                    for _, zombie in ipairs(folder:GetDescendants()) do
+                        if zombie:IsA("Model") then
+                            local zhrp = zombie:FindFirstChild("HumanoidRootPart")
+                            local hum = zombie:FindFirstChildOfClass("Humanoid")
+
+                            if zhrp and hum and hum.Health > 0 then
+                                zhrp.CFrame = CFrame.new(zhrp.Position.X, -500, zhrp.Position.Z)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+
+        task.wait(0.1)
+    end
+end)
+
+
+   end
+})
+
+
+
+Toggles.MyToggle:OnChanged(function(Value)
+_G.Killzombie = Value
+end)
+
+Toggles.MyToggle:SetValue(false)
+
+
+
+
+local MyButton = zombie:AddButton({
+    Text = 'Kill All zombie',
+    Func = function()
+		   local character = game.Players.LocalPlayer.Character
+local hrp = character and character:FindFirstChild("HumanoidRootPart")
+
+if hrp then
+    for _, folder in ipairs({
+        workspace:FindFirstChild("MapZombies"),
+        workspace:FindFirstChild("WaveZombies")
+    }) do
+        if folder then
+            for _, zombie in ipairs(folder:GetDescendants()) do
+                if zombie:IsA("Model") then
+                    local zhrp = zombie:FindFirstChild("HumanoidRootPart")
+                    local hum = zombie:FindFirstChildOfClass("Humanoid")
+
+                    if zhrp and hum and hum.Health > 0 then
+                        zhrp.CFrame = CFrame.new(zhrp.Position.X, -500, zhrp.Position.Z)
+                    end
+                end
+            end
+        end
+    end
+end
+    end,
+    DoubleClick = false,
+    Tooltip = 'Bring all zombie to void'
+})
+
+
+
+
+
+zombie:AddToggle('MyToggle', {
+    Text = 'Bring all zombie',
+    Default = true, 
+    Tooltip = 'Bring all zombie and you can kill them(doesnt recommand)',
+
+    Callback = function(Value)
+
+        _G.bringzombie = Value
+
+task.spawn(function()
+	while _G.bringzombie do
+		local character = game.Players.LocalPlayer.Character
+		local hrp = character and character:FindFirstChild("HumanoidRootPart")
+
+		if hrp then
+			for _, folder in ipairs({
+				workspace:FindFirstChild("MapZombies"),
+				workspace:FindFirstChild("WaveZombies")
+			}) do
+				if folder then
+					for _, zombie in ipairs(folder:GetDescendants()) do
+						if zombie:IsA("Model") then
+							local zhrp = zombie:FindFirstChild("HumanoidRootPart")
+							local hum = zombie:FindFirstChildOfClass("Humanoid")
+
+							if zhrp and hum and hum.Health > 0 then
+								zhrp.CFrame = hrp.CFrame * CFrame.new(0, 0, -5)
+							end
+						end
+					end
+				end
+			end
+		end
+
+		task.wait(0.1)
+	end
+end)
+		
+    end
+})
+
+
+
+Toggles.MyToggle:OnChanged(function(Value)
+_G.bringzombie = Value
+end)
+
+Toggles.MyToggle:SetValue(false)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--setting
+Library:SetWatermarkVisibility(true)
+
+local FrameTimer = tick()
+local FrameCounter = 0;
+local FPS = 60;
+
+local WatermarkConnection = game:GetService('RunService').RenderStepped:Connect(function()
+    FrameCounter += 1;
+
+    if (tick() - FrameTimer) >= 1 then
+        FPS = FrameCounter;
+        FrameTimer = tick();
+        FrameCounter = 0;
+    end;
+
+    Library:SetWatermark(('unziphub | %s fps | %s ms'):format(
+        math.floor(FPS),
+        math.floor(game:GetService('Stats').Network.ServerStatsItem['Data Ping']:GetValue())
+    ));
+end);
+
+Library.KeybindFrame.Visible = true; 
+
+Library:OnUnload(function()
+    WatermarkConnection:Disconnect()
+
+    print('Unloaded!')
+    Library.Unloaded = true
+end)
+
+
+local MenuGroup = Tabs['UI Settings']:AddLeftGroupbox('Menu')
+
+
+MenuGroup:AddButton('Unload', function() Library:Unload() end)
+MenuGroup:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'End', NoUI = true, Text = 'Menu keybind' })
+
+Library.ToggleKeybind = Options.MenuKeybind 
+
+ThemeManager:SetLibrary(Library)
+SaveManager:SetLibrary(Library)
+
+SaveManager:IgnoreThemeSettings()
+
+SaveManager:SetIgnoreIndexes({ 'MenuKeybind' })
+
+ThemeManager:SetFolder('MyScriptHub')
+SaveManager:SetFolder('MyScriptHub/specific-game')
+
+
+SaveManager:BuildConfigSection(Tabs['UI Settings'])
+
+ThemeManager:ApplyToTab(Tabs['UI Settings'])
+SaveManager:LoadAutoloadConfig()
